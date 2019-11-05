@@ -1,0 +1,16 @@
+{
+  "name": "wonderjs_example_simple",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "wonderjs": "^1.0.0"
+  },
+  "scripts": {
+    "build": "cp ./node_modules/wonderjs/HALasm.js.mem ./dist && webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
