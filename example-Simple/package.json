@@ -7,7 +7,7 @@
     "wonderjs": "^1.0.0"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "cp ./node_modules/wonderjs/HALasm.js.mem ./dist && webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
