@@ -62,6 +62,36 @@ s |
 --|
 `0` or `1`. If ButtonMain is pressed, this value will be 1. When ButtonMain is released, this value returns back to 0.
 
+#### DISTANCE_BACK
+cm |
+--|
+The distance in cm that the back sensor senses something away.
+
+#### DISTANCE_FRONT_LEFT_FACING
+cm |
+--|
+The distance in cm that the front left sensor senses something away.
+
+#### DISTANCE_FRONT_RIGHT_FACING
+cm |
+--|
+The distance in cm that the front right sensor senses something away.
+
+#### ENCODER_LEFT_WHEEL
+cm |
+--|
+The amount of distance in cm that the left wheel has travelled.
+
+#### ENCODER_RIGHT_WHEEL
+cm |
+--|
+The amount of distance in cm that the right wheel has travelled.
+
+#### GYROSCOPE
+r | p | y
+--| - | --
+The roll | The pitch | The Yaw
+
 #### HEAD_POSITION_PAN
 degree |
 --|
@@ -76,3 +106,4 @@ The angle in degree in which the robot's head has tilted away from the default l
 flag |
 --|
 `0` or `1`. If the robot is currently playing sound, this value will be 1. Else, this value will be 0.
+
