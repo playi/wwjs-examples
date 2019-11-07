@@ -295,7 +295,7 @@ robot.command.wheelSpeeds(10, 12); // Move the left wheel at 10cm/s and the righ
 robot.command.wheelSpeeds(0, 0); // Stop both the left and right wheel
 ```
 
-## Chain commmands
+## Chain commands
 When you call 2 commands one after another, such as the following:
 
 ```javascript
