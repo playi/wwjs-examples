@@ -294,3 +294,103 @@ robot.command.wheelSpeeds(0, 8); // Move the right wheel at 8cm/s
 robot.command.wheelSpeeds(10, 12); // Move the left wheel at 10cm/s and the right wheel at 12cm/s
 robot.command.wheelSpeeds(0, 0); // Stop both the left and right wheel
 ```
+
+## Chain commmands
+When you call 2 commands one after another, such as the following:
+
+```javascript
+// Attempt to turn the robot head 90 degrees and turn back to 0 degrees.
+robot.command.headPan(90);
+robot.command.headPan(0);
+```
+The net result will be that the robot will not turn its head at all since both commands get sent to the robot instantaneously.
+
+To execute one command after another, you can consider 2 approaches.
+1. Set a timer and execute one command after another.
+2. Chaining commands using the like of Promise.
+
+### Using a timer
+One simple approach to execute one command after another would be to delay function call using a timer.
+
+```javascript
+// Turns the robot's head by 90 degrees
+robot.command.headPan(90);
+// After 500ms, turns the robot's head back to 0 degrees
+setTimeout(() => robot.command.headPan(0), 500);
+```
+Some commands such as `pose` and `sound` allow you to know exactly when the command has ended through capturing sensors data. For eaxmple, when a `pose` command executes, the `BODY_POSE.watermark` value will be 0-254, and when the `pose` command finishes, this value will change to 255, thereby allowing you to determine exactly when a `pose` command finishes. 
+
+Similar idea applies to other commands that set a flag to `true` or `false` when certain action is executed. For example, when Button_Main is pressed, the value `BUTTON_MAIN.s` will be set to 1, and on release, back to 0. By listening to these sensor values change, you can determine the exact time when certain event occur rather than relying on an arbitrary timeout value in `setTimeout`. Therefore, you can execute the next command after these events occur.
+
+### Using Promise
+Another way to execute one command after another would be to use the like of Promise.
+
+```javascript
+// Wrap commands in a Promise
+function execute(command) {
+        return new Promise(function (resolve, reject) {
+		// execute the command
+		command();
+
+		if (command.toString().includes("pose")) {
+			// pose command, TODO: rely on sensor change value to determine next command
+		} else {
+			// other commands, arbitrarily determine the command to finish in 500ms
+			setTimeout(() => resolve(), 500);
+		}
+	});
+}
+
+execute(() => robot.command.headPan(90)) // First, turn the head by 90 degrees
+	.then(() => execute(() => robot.command.headPan(0))) // Then, turn the head back to 0 degree
+	.then(() => execute(() => robot.command.headPan(-90))) // Then, turn the head by -90 degrees
+	.then(() => execute(() => robot.command.headTilt(20))) // Then, tilt the head by 20 degrees
+	.then(() => execute(() => robot.command.headPan(0))) // Then, turn the head back to 0 degrees
+	.then(() => execute(() => robot.command.headTilt(0))); // Finally, tilt the head back to 0 degree
+```
+
+By wrapping commands in a Promise, you can chain one command after another, and you are in full control for the arbitrary timeout value.
+
+E.g. to determine when a pose has finished:
+```javascript
+let poseStarted = false;
+let _resolve;
+WonderJS.addEventListener("onsensor", ({id, sensors}) => {
+        if (sensors.BODY_POSE != null && sensors.BODY_POSE.hasOwnProperty('watermark')) {
+		if (sensors.BODY_POSE.watermark !== 255) {
+			poseStarted = true;
+                }
+                // pose() was called before, and if the sensor reports 255 again, this means pose has stopped
+                if (poseStarted && sensors.BODY_POSE.watermark === 255 && _resolve != null) {
+        	        _resolve();
+          	        _resolve = null;
+          	        poseStarted = false;
+                }
+        }
+});
+
+function execute(command) {
+	return new Promise(function (resolve, reject) {
+		// execute the command
+		command();
+
+		if (command.toString().includes("pose")) {
+			// pose command, rely on sensor change value to determine next command
+			_resolve = resolve;
+		} else {
+			// other commands, arbitrarily determine the command to finish in 500ms
+			setTimeout(() => resolve(), 500);
+		}
+	});
+}
+
+execute(() => robot.command.pose(20, 0, 0, 1)) // First, move the robot forward by 20cm in 1 sec.
+	.then(() => execute(() => robot.command.pose(0, 0, 90, 0.5))) // Then, turn the robot by 90 degrees in 0.5 sec
+	.then(() => execute(() => robot.command.pose(30, 0, 0, 0.6))) // Then, move the robot forward by 30cm in 0.6 sec
+	.then(() => execute(() => robot.command.headPan(90))) // Then, turn the robot's head by 90 degrees
+	.then(() => execute(() => robot.command.headPan(0))); // Finally, turn the robot's head back to 0 degrees
+```
+
+By capturing the sensors values and resolving `Promise`, you are able to chain commands to execute one after another. The same logic applies to determine other value changes such as Button pressed, or Sound playing and stopping.
+
+There are other ways you could chain one command after another, and using `setTimeout` or `Promise` are just some ways you can achieve executing multiple commmands one after another.
