@@ -25,7 +25,7 @@ WonderJS.addEventListener("onsensor", ({id, sensors}) => {
 #### ACCELEROMETER
 x | y | z
 --| -- | --
-A number | A number | A number
+A number representing the x-direction. | A number representing the y-direction. | A number representing the z-direction.
 
 #### ANIMATION_PLAYING
 flag |
@@ -38,9 +38,9 @@ chg | level | volt
 `0` or `1`. If the robot is charging, the value will be 1. Else, the value will be 0. | A number representing battery level. | A number representing the voltage level.
 
 #### BODY_POSE
-x | y | degree
---| -- | --
-A number representing the x-coordinate. | A number representing the y-coordinate. | Angle of the robot in degree.
+x | y | degree | watermark
+--| -- | -- | --
+A number representing the x-coordinate. | A number representing the y-coordinate. | Angle of the robot in degree. | This sensor is a "sparse" sensor, which means it comes in approximately every 10 sensor packets. This field is useful for determining when a robot has finished executing a `pose` command. It has a value of 0-255. <br> `0`: No new command for the robot and the robot is still working on getting to the last commanded location. <br> `1-254`: The number of commands outstanding in the future. This happens when you send multiple commands to the robot at once. <br> `255`: Robot is not currently trying to get to any location, i.e. idling.
 
 #### BUTTON_1
 s |
@@ -101,6 +101,11 @@ The angle in degree in which the robot's head has panned away from the front.
 degree |
 --|
 The angle in degree in which the robot's head has tilted away from the default level.
+
+#### MICROPHONE
+amp | clap
+--- | ---
+A number representing the amplitude of sound recorded. | `0` or `1`. When the microphone detects a clap sound, this value will be `1`. Else, this value will be `0`.
 
 #### SOUND_PLAYING
 flag |
