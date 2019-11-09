@@ -14,7 +14,7 @@ See the example folder for an example using React.
 
 ## List of all functions
 * [connect()](#connect)
-* [disconnect()](#disconnect)
+* [disconnect(robotId)](#disconnect)
 * [addEventListener(string, function)](#addeventlistener)
 * [eyering(bits, brightness)](#eyering)
 * [rgbAll(r, g, b)](#rgball)
@@ -45,12 +45,15 @@ E.g.
 WonderJS.connect();
 ```
 
-## `disconnect()`
-Disconnect any connected robot.
+## `disconnect(robotId)` <a name="disconnect">
+Disconnect the connected robot with the particular robotId. You can get the robotId by getting the `robot` object through adding `onconnect` in [addEventListener](#addeventlistener).
 
 E.g. 
 ```javascript
-WonderJS.disconnect();
+let robot;
+WonderJS.addEventListener("onconnect", rbt => {robot = rbt;});
+
+WonderJS.disconnect(robot.id);
 ```
 ## `addEventListener(string, function)` <a name="addeventlistener">
 Add a function that will be executed when a certain event triggers.
@@ -318,7 +321,7 @@ robot.command.headPan(90);
 // After 500ms, turns the robot's head back to 0 degrees
 setTimeout(() => robot.command.headPan(0), 500);
 ```
-Some commands such as `pose` and `sound` allow you to know exactly when the command has ended through capturing sensors data. For eaxmple, when a `pose` command executes, the `BODY_POSE.watermark` value will be 0-254, and when the `pose` command finishes, this value will change to 255, thereby allowing you to determine exactly when a `pose` command finishes. 
+Some commands such as `pose` and `sound` allow you to know exactly when the command has ended through capturing sensors data. For example, when a `pose` command executes, the `BODY_POSE.watermark` value will be 0-254, and when the `pose` command finishes, this value will change to 255, thereby allowing you to determine exactly when a `pose` command finishes. 
 
 Similar idea applies to other commands that set a flag to `true` or `false` when certain action is executed. For example, when Button_Main is pressed, the value `BUTTON_MAIN.s` will be set to 1, and on release, back to 0. By listening to these sensor values change, you can determine the exact time when certain event occur rather than relying on an arbitrary timeout value in `setTimeout`. Therefore, you can execute the next command after these events occur.
 
