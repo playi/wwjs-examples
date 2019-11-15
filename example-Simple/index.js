@@ -1,4 +1,4 @@
-import WonderJS from 'wonderjs';
+import WonderJS from '@wonderworkshop/wwjs';
 
 let robot;
 let connectBtn = document.getElementById("connect");
@@ -17,7 +17,7 @@ connectBtn.addEventListener("click", () => {
 
 // Randomly illuminate the eye ring with full brightness (1.0).
 illuminateEyeBtn.addEventListener("click", () => {
-	robot.command.eyering([zeroOrOne(), zeroOrOne(), zeroOrOne(),
+	robot.command.eyeRing([zeroOrOne(), zeroOrOne(), zeroOrOne(),
 		zeroOrOne(), zeroOrOne(), zeroOrOne(), zeroOrOne(),
 		zeroOrOne(), zeroOrOne(), zeroOrOne(), zeroOrOne(), zeroOrOne()],
 		1.0);

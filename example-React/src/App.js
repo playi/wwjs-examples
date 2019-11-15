@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WonderJS from 'wonderjs';
+import WonderJS from '@wonderworkshop/wwjs';
 
 import './App.css';
 

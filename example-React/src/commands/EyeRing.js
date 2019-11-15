@@ -59,7 +59,7 @@ class EyeRing extends Component {
   }
 
   send() {
-    this.props.robot.command.eyering(this.state.lit, 1.0);
+    this.props.robot.command.eyeRing(this.state.lit, 1.0);
   }
 
   render() {
