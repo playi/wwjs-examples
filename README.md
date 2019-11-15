@@ -3,20 +3,20 @@ A documentation of javascript API functions available for Wonder Workshop's Dash
 
 ## Installation
 1. Create and navigate to a new folder. If you do not already have a `package.json` file, run `npm init -y`
-2. Run `npm install wonderjs` to download the Wonder Workshop API.
-3. To import the API library, call `import WonderJS from 'wonderjs';` in your `.js` file.
-4. Use a module bundler such as webpack to bundle your `js` files and `wonderjs` together.
+2. Run `npm install @wonderworkshop/wwjs` to download the Wonder Workshop API.
+3. To import the API library, call `import WonderJS from '@wonderworkshop/wwjs';` in your `.js` file.
+4. Use a module bundler such as webpack to bundle your `js` files and `@wonderworkshop/wwjs` together.
 5. Include the bundle file in your HTML file.
-6. Navigate into `node_modules` folder and locate `wonderjs` folder. 
+6. Navigate into `node_modules` folder and locate `@wonderworkshop/wwjs` folder. 
 7. Copy `HALasm.js.mem` into public folder or the folder where you run your index.html
 
-See the example folder for an example using React.
+See the example-React folder for a full example using ReactJS, or the example-Simple folder for a simple use case.
 
 ## List of all functions
 * [connect()](#connect)
 * [disconnect(robotId)](#disconnect)
 * [addEventListener(string, function)](#addeventlistener)
-* [eyering(bits, brightness)](#eyering)
+* [eyeRing(bits, brightness)](#eyering)
 * [rgbAll(r, g, b)](#rgball)
 * [rgbEye(r, g, b)](#rgbeye)
 * [rgbLeftEar(r, g, b)](#rgbleftear)
@@ -33,7 +33,7 @@ See the example folder for an example using React.
 # Functions documentations
 To use the WonderJS API, call:
 ```javascript
-import WonderJS from 'wonderjs';
+import WonderJS from '@wonderworkshop/wwjs';
 ```
 
 The following section will document the functions available in this library.
@@ -86,7 +86,7 @@ WonderJS.addEventListener("onconnect", rbt => {robot = rbt;});
 robot.command.command_name(command specific parameters)
 ```
 
-* ### `eyering(bits, brightness)` <a name="eyering">
+* ### `eyeRing(bits, brightness)` <a name="eyering">
 Sends a command to illuminate the eye ring of the robot
 
 bits | brightness
@@ -95,7 +95,7 @@ An array of 12 digits containing either 0 or 1, where 0 represents not targettin
 
 E.g.
 ```javascript
-robot.command.eyering([0,1,1,0,1,1,1,1,1,1,0,1], 0.5);
+robot.command.eyeRing([0,1,1,0,1,1,1,1,1,1,0,1], 0.5);
 ```
 
 * ### `rgbAll(r, g, b)` <a name="rgball" />

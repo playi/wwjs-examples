@@ -10,7 +10,7 @@ Refer to [README.md](README.md#addeventlistener) for details of how to use the `
 All the sensors follow the skeleton:
 
 ```javascript
-import WonderJS from 'wonderjs';
+import WonderJS from '@wonderworkshop/wwjs';
 
 WonderJS.addEventListener("onsensor", ({id, sensors}) => {
   // BUTTON_MAIN is the key, and s is the value. Replace the key and value with different values below.
